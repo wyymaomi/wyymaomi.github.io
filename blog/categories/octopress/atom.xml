@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Octopress | wyy的博客]]></title>
+  <link href="http://wyymaomi.github.io/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://wyymaomi.github.io/"/>
+  <updated>2014-07-01T12:01:12+08:00</updated>
+  <id>http://wyymaomi.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用Octopress搭建Github博客]]></title>
+    <link href="http://wyymaomi.github.io/blog/2014/07/01/using-octopress-set-up-github-papages/"/>
+    <updated>2014-07-01T11:17:54+08:00</updated>
+    <id>http://wyymaomi.github.io/blog/2014/07/01/using-octopress-set-up-github-papages</id>
+    <content type="html"><![CDATA[<blockquote><p><a href="http://octopress.org/">Octopress</a>是利用<a href="https://github.com/jekyll/jekyll">Jekyll</a>博客引擎开发的一个博客系统，生成的静态页面能够很好的在github page上展现。号称是hacker专属的一个博客系统(A blogging framework for hackers.)</p></blockquote>
+
+<p>本文介绍下如何在苹果电脑（Mac OS X 10.9.2）利用Octopress搭建一个Github博客。</p>
+
+<h2>目录</h2>
+
+<ul>
+<li>安装Ruby</li>
+<li>安装Octopress</li>
+<li>部署Octpress到Github Page上</li>
+<li>配置Octopress</li>
+<li>开始写博客</li>
+<li>更多操作</li>
+<li>小结</li>
+</ul>
+
+
+<h2>一、安装Ruby</h2>
+
+<p>Octopress需要Ruby环境，RVM（Ruby Version Manager）负责安装和管理Ruby环境。先在终端输入如下命令，来安装RVM：</p>
+
+<p>```
+curl -L <a href="https://get.rvm.io">https://get.rvm.io</a> | bash -s stable &mdash;ruby</p>
+
+<p>```</p>
+
+<p>接着是安装Ruby 1.9.3，在终端一次运行如下命令：</p>
+
+<p>```
+rvm install 1.9.3
+rvm use 1.9.3
+rvm rubygems latest</p>
+
+<p>```</p>
+
+<p>完成以上操作之后，运行<code>ruby --version</code>应该可以看到ruby 1.9.3环境已经安装好了。</p>
+
+<h2>二、安装Octopress</h2>
+
+<p>在安装Octopress之前，请确保你的电脑上已经安装有git了，在终端输入<code>git --version</code>，应该可以看到电脑中的git版本。如果没有显示相关内容，请先安装<a href="http://git-scm.com/">git</a>
+git安装好后，利用git命令将Octopress从github上clone到本地上，命令如下：</p>
+
+<p><code>
+git clone git://github.com/imathis/octopress.git octopress
+cd octopress
+</code></p>
+
+<p>紧接着，安装依赖项</p>
+
+<p><code>
+gem install bundler
+rbenv rehash    # If you use rbenv, rehash to be able to run the bundle command
+bundle install
+</code>
+然后安装默认Octopress主题</p>
+
+<p><code>
+rake install
+</code>
+参考：<a href="http://octopress.org/docs/setup/">Octopress Setup</a></p>
+
+<h2>三、部署Octpress到Github Page上</h2>
+
+<p>Github的<a href="http://pages.github.com/">Page service</a>可以免费托管博客，并且还可以自定义域名。</p>
+
+<p>首先需要在Github上创建一个仓库，并且将仓库名称按照这样的方式进行命名：<code>username.github.io</code>。其中<code>username</code>是你的Github用户名或组织名。</p>
+
+<p>等后面配置完毕之后，我们就可以在浏览器中使用页面地址<code>http://username.github.io</code>来访问我们的博客。一般来说，我们希望将博客源码放到source分支下，并将生成的内容提交到master分支上。
+创建好仓库之后，我们需要用Octopress的一个配置rake任务来自动配置上面的仓库：可以让我们方便的部署Github page。命令如下：</p>
+
+<p><code>
+rake setup_github_pages
+</code>
+上面的命令会做一些事情（详细介绍看下面给出的参考链接）。其中最主要的就是创建一个<code>_deploy</code>目录，该目录用来存放部署到master分支的内容。期间会要求你输入仓库的url（例如：<code>git@github.com:username/username.github.io.git</code>），根据提示，进行输入即可。
+完成上面的命令之后，我们就可以生成博客并真正的部署到仓库中。执行如下命令：</p>
+
+<p><code>
+rake generate
+rake deploy
+</code>
+上面的命令会生成博客文件，并将生成的博客文件拷贝到<code>_deploy</code>目录下，然后将这些内容添加到git中，并commit和push到仓库的master分支。
+现在可以访问<a href="http://username.github.io">http://username.github.io</a>了。但是暂时还不能访问，需要等待十分钟后，如果失败会发一封邮件告知失败原因。</p>
+
+<p>至此，我们的博客已经完成了基本的部署，不过博客的source需要单独提交，执行如下命令就可以将source提交到仓库的source分支下：</p>
+
+<p><code>
+git add .
+git commit -m 'first commit'
+git push origin source
+</code>
+如果在部署仓库之前，需要预览一下博客，可以在终端输入<code>rake preview</code>命令，然后在浏览器中进行本地预览访问，访问地址：<code>http://127.0.0.1:4000</code>。效果跟仓库中的一样。
+参考：<a href="http://octopress.org/docs/deploying/">Deploying to Github Pages</a></p>
+
+<h2>四、配置Octopress</h2>
+
+<p>Octopress的作者已经尽量让配置简化了。大多数情况下只需要配置<code>_config.yml</code>和<code>Rakefile</code>文件即可。其中<code>Rakefile</code>是和博客部署相关，一般情况下并不需要修改这个文件，除非使用了<code>rsync</code>。</p>
+
+<p>以下是配置Octopress需要用到的文件列表。</p>
+
+<p><code>
+_config.yml # Main config(Jekyll's settings)
+Rakefile    # Configs for deployment
+config.rb   # Compass config
+config.ru   # Rack config
+</code></p>
+
+<p><code>_config.yml</code>是博客重要的一个配置文件，在<code>_config.yml</code>文件中有三大配置项目：<code>Main Config</code>、<code>Jekyll &amp; Plugins</code> 以及 <code>3rd Party Settings</code>。
+一般，该文件中<code>url</code>是必须要填写的，这里的<code>url</code>是你的github page地址。另外再修改下<code>title</code>、<code>subtitle</code>和<code>author</code>，根据需求，再开启一些第三方组件服务。</p>
+
+<p>1、Main Configs</p>
+
+<p>```</p>
+
+<pre><code>url:                # For rewriting urls for RSS, etc
+title:              # Used in the header and title tags
+subtitle:           # A description used in the header
+author:             # Your name, for RSS, Copyright, Metadata
+simple_search:      # Search engine for simple site search
+description:        # A default meta description for your site
+date_format:        # Format dates using Ruby's date strftime syntax
+subscribe_rss:      # Url for your blog's feed, defauts to /atom.xml
+subscribe_email:    # Url to subscribe by email (service required)
+category_feeds:     # Enable per category RSS feeds (defaults to false in 2.1)
+email:              # Email address for the RSS feed if you want it.
+</code></pre>
+
+<p>```
+关于_config.yml文件中的更多内容，请看这里的内容：<a href="http://octopress.org/docs/configuring/">http://octopress.org/docs/configuring/</a></p>
+
+<p>建议：最好把里面的twitter相关信息全部删掉，否则由于GFW的原因，将会造成页面load很慢。同理，修改定制文件/source/_includes/custom/head.html把google的自定义字体去掉。from<a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">唐巧的博客</a></p>
+
+<h2>5、开始写博客</h2>
+
+<p>Octpress为我们提供了一些task来创建博文和页面。博文必须存储在source/_posts目录下，并且需要按照Jekyll的命名规范对文章进行命名：YYYY-MM-DD-post_title.markdown。文章的名字会被当作url的一部分，而其中的日期<code>YYYY-MM-DD-post-title.markdown</code>。文章的名字会被当作url的一部分，而其中的日期用于对博文的区分和排序。</p>
+
+<p>通过Octopress提供的task可以正确的按照命名规范创建一个博文，并且在博文中会附带一些yaml元数据。只需要在终端中输入如下命令：</p>
+
+<p><code>
+rake new_post["title"]
+</code></p>
+
+<p>其中title为博文的文件名，创建出来的文件默认为markdown格式。上面的命令会创建出这样一个文件：<code>source/_posts/2013-08-03-title.markdown</code>。打开这个文件，可以看到里面有如下一些内容（告诉Jekyll博客引擎如何处理博文和页面）：</p>
+
+<h2>```</h2>
+
+<p>layout: post
+title: &ldquo;Zombie Ninjas Attack: A survivor&rsquo;s retrospective&rdquo;
+date: 2011-07-03 5:59
+comments: true
+external-url:</p>
+
+<h2>categories:</h2>
+
+<p><code>``
+在这里你可以关闭评论或者分类你的博文。如果你的博客有多个作者，你可以加入</code>author: Your Name<code>作为博文的元数据属性。如果只是作为草稿，你可以加入</code>published: false`，避免生成博文的时候发布出去。如果你想要发布一个<a href="http://octopress.org/docs/blogging/linklog/">linklog</a>样式的博文（外部链接的博客入口），只需要往你的博文里加入一个外部url。
+你可以加入一个或多个类别，如下例子：</p>
+
+<p>```</p>
+
+<h1>One category</h1>
+
+<p>categories: Sass</p>
+
+<h1>Multiple categories example 1</h1>
+
+<p>categories: [CSS3, Sass, Media Queries]</p>
+
+<h1>Multiple categories example 2</h1>
+
+<p>categories:
+&ndash; CSS3
+&ndash; Sass
+&ndash; Media Queries
+```</p>
+
+<p>参考：<a href="http://octopress.org/docs/blogging/">Blogging Basics</a></p>
+
+<p>来源：<a href="http://beyondvincent.com/blog/2013/08/03/108-creating-a-github-blog-using-octopress/">http://beyondvincent.com/blog/2013/08/03/108-creating-a-github-blog-using-octopress/</a></p>
+]]></content>
+  </entry>
+  
+</feed>

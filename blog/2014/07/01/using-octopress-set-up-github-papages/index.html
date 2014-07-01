@@ -250,7 +250,64 @@ git安装好后，利用git命令将Octopress从github上clone到本地上，命
 
 <h2>5、开始写博客</h2>
 
-<p>Octpress为我们提供了一些task来创建博文和页面。博文必须存储在source/_posts目录下，并且需要按照Jekyll的命名规范对文章进行命名：YYYY-MM-DD-post_title.markdown。文章的名字会被当作url的一部分，而其中的日期</p>
+<p>Octpress为我们提供了一些task来创建博文和页面。博文必须存储在source/_posts目录下，并且需要按照Jekyll的命名规范对文章进行命名：YYYY-MM-DD-post_title.markdown。文章的名字会被当作url的一部分，而其中的日期<code>YYYY-MM-DD-post-title.markdown</code>。文章的名字会被当作url的一部分，而其中的日期用于对博文的区分和排序。</p>
+
+<p>通过Octopress提供的task可以正确的按照命名规范创建一个博文，并且在博文中会附带一些yaml元数据。只需要在终端中输入如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post["title"]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中title为博文的文件名，创建出来的文件默认为markdown格式。上面的命令会创建出这样一个文件：<code>source/_posts/2013-08-03-title.markdown</code>。打开这个文件，可以看到里面有如下一些内容（告诉Jekyll博客引擎如何处理博文和页面）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>---
+</span><span class='line'>layout: post
+</span><span class='line'>title: "Zombie Ninjas Attack: A survivor's retrospective"
+</span><span class='line'>date: 2011-07-03 5:59
+</span><span class='line'>comments: true
+</span><span class='line'>external-url:
+</span><span class='line'>categories:
+</span><span class='line'>---</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在这里你可以关闭评论或者分类你的博文。如果你的博客有多个作者，你可以加入<code>author: Your Name</code>作为博文的元数据属性。如果只是作为草稿，你可以加入<code>published: false</code>，避免生成博文的时候发布出去。如果你想要发布一个<a href="http://octopress.org/docs/blogging/linklog/">linklog</a>样式的博文（外部链接的博客入口），只需要往你的博文里加入一个外部url。
+你可以加入一个或多个类别，如下例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># One category
+</span><span class='line'>categories: Sass
+</span><span class='line'> 
+</span><span class='line'># Multiple categories example 1
+</span><span class='line'>categories: [CSS3, Sass, Media Queries]
+</span><span class='line'> 
+</span><span class='line'># Multiple categories example 2
+</span><span class='line'>categories:
+</span><span class='line'>- CSS3
+</span><span class='line'>- Sass
+</span><span class='line'>- Media Queries</span></code></pre></td></tr></table></div></figure>
+
+
+<p>参考：<a href="http://octopress.org/docs/blogging/">Blogging Basics</a></p>
+
+<p>来源：<a href="http://beyondvincent.com/blog/2013/08/03/108-creating-a-github-blog-using-octopress/">http://beyondvincent.com/blog/2013/08/03/108-creating-a-github-blog-using-octopress/</a></p>
 </div>
 
 
@@ -276,12 +333,16 @@ git安装好后，利用git命令将Octopress从github上clone到本地上，命
 <time datetime="2014-07-01T11:17:54+08:00" pubdate data-updated="true">Jul 1<sup>st</sup>, 2014</time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/mac/'>mac</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a>
+  
+</span>
+
 
     </p>
     
       <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://wyymaomi.github.io/blog/2014/07/01/using-octopress-set-up-github-papages/" data-via="" data-counturl="http://wyymaomi.github.io/blog/2014/07/01/using-octopress-set-up-github-papages/" >Tweet</a>
   
   
   
@@ -333,16 +394,6 @@ git安装好后，利用git命令将Octopress从github上clone到本地上，命
 
 
 
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
 
 
 
